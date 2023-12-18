@@ -4,9 +4,18 @@ Built from the **Apps SDK starter kit** for Canva's app development platform. ðŸ
 
 ## Requirements
 
-- Node.js `v18` or `v20.10.0`
-- npm `v9` or `v10`
+- A Canva (free) account
 
-**Note:** To make sure you're running the correct version of Node.js, we recommend using a version manager, such as [nvm](https://github.com/nvm-sh/nvm#intro). The [.nvmrc](/.nvmrc) file in the root directory of this repo will ensure the correct version is used once you run `nvm install`.
+## How to use this app
 
 This app just simply pulls an image from Unsplash and provides it to the GUI for you to add at a fixed 1920x1080. Canva allows multiple scaling and cropping options so this is great for simply adding a placeholder or maybe just for some inspiration.
+
+- Find the "Random Image" app under the 'Apps' button after opening a design in Canva and click 'Open'.
+- Press the Generate button to see a new image pulled from Unsplash.
+- If you like what you see in the preview, click on the image and will be added to your Uploads and your design.
+- Style as you please.
+
+## Disclaimers
+
+I am in no way affiliated with Unsplash. This tool is simply designed to simplify using their service from within Canva for inspiration and template simplification reasons only.
+Please see https://unsplash.com/license and verify that you are not violating their terms of service before using their images.
