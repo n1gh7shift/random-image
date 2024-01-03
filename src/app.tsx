@@ -1,34 +1,30 @@
 import {
   Button,
   FormField,
+  LoadingIndicator,
   MultilineInput,
   Rows,
   Text,
   Title,
 } from "@canva/app-ui-kit";
 
-import { response } from "express";
 import React, { useState } from "react";
 import styles from "styles/components.css";
 import { upload } from "@canva/asset";
 import { addNativeElement } from "@canva/design";
+import { relative } from "path";
 
-
-const BACKEND_URL = 'https://source.unsplash.com/random/1920x1080'
-
+const BACKEND_URL = "https://source.unsplash.com/random/1920x1080";
 
 type State = "idle" | "loading" | "success" | "error";
 
-function uuidv4() { 
-  return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'
-  .replace(/[xy]/g, function (c) { 
-      const r = Math.random() * 16 | 0,  
-          v = c == 'x' ? r : (r & 0x3 | 0x8); 
-      return v.toString(16); 
-  }); 
+function uuidv4() {
+  return "xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0,
+      v = c == "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
 }
-
-
 
 type AppElementData = {
   imageUrl: string;
@@ -38,43 +34,20 @@ type AppElementData = {
   uuid: string;
 };
 
-
-
 const currentImage: AppElementData = {
   imageUrl: "",
   width: 1920,
   height: 1080,
   rotation: 0,
-  uuid: ""
-
-}
-
-async function handleClick(url) {
-  // Upload an image
-
-
-  const result = await upload({
-    type: "IMAGE",
-    id: currentImage.uuid,
-    mimeType: "image/jpeg",
-    url: currentImage.imageUrl,
-    thumbnailUrl:
-    currentImage.imageUrl,
-  });
-
-    // Add the image to the design
-    await addNativeElement({
-      type: "IMAGE",
-      ref: result.ref,
-    });
-}
-
+  uuid: "",
+};
 
 export const App = () => {
   const [state, setState] = useState<State>("idle");
   const [responseBody, setResponseBody] = useState<unknown | undefined>(
     undefined
   );
+  const [imageAdding, setImageAdding] = useState(false);
 
   const sendGetRequest = async () => {
     try {
@@ -87,19 +60,41 @@ export const App = () => {
 
       currentImage.uuid = uuidv4();
       currentImage.imageUrl = body.url;
-
-
     } catch (error) {
       setState("error");
       console.error(error);
     }
   };
 
+  async function handleClick(url) {
+    setImageAdding(true);
+
+    // Upload an image
+
+    const result = await upload({
+      type: "IMAGE",
+      id: currentImage.uuid,
+      mimeType: "image/jpeg",
+      url: currentImage.imageUrl,
+      thumbnailUrl: currentImage.imageUrl,
+    });
+
+    // Add the image to the design
+    await addNativeElement({
+      type: "IMAGE",
+      ref: result.ref,
+    });
+
+    setImageAdding(false);
+  }
+
   return (
     <div className={styles.scrollContainer}>
       <Rows spacing="3u">
         <Text>
-          This retrieves a random images from Unsplash and allows you to add to your design. Just click generate until your happy and click on the image to add it.
+          This retrieves a random images from Unsplash and allows you to add to
+          your design. Just click generate until your happy and click on the
+          image to add it.
         </Text>
         {/* Idle and loading state */}
         {state !== "error" && (
@@ -114,8 +109,28 @@ export const App = () => {
             </Button>
             {state === "success" && responseBody && (
               // console.log(responseBody.url)
-
-              <img src={responseBody.url} onClick={() => handleClick(responseBody.url)} />
+              <div style={{ position: "relative", width: "100%" }}>
+                <img
+                  src={responseBody.url}
+                  onClick={() => handleClick(responseBody.url)}
+                  style={{ cursor: "pointer", width: "100%" }}
+                />
+                {imageAdding ? (
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      backgroundColor: "hsl(0,0%,0%,0.6)",
+                      height: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <LoadingIndicator />
+                  </div>
+                ) : null}
+              </div>
             )}
           </>
         )}
