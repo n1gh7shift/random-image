@@ -91,11 +91,7 @@ export const App = () => {
   return (
     <div className={styles.scrollContainer}>
       <Rows spacing="3u">
-        <Text>
-          This retrieves a random images from Unsplash and allows you to add to
-          your design. Just click generate until your happy and click on the
-          image to add it.
-        </Text>
+        <Text>t</Text>
         {/* Idle and loading state */}
         {state !== "error" && (
           <>
@@ -105,7 +101,7 @@ export const App = () => {
               loading={state === "loading"}
               stretch
             >
-              Generate
+              Get random image
             </Button>
             {state === "success" && responseBody && (
               // console.log(responseBody.url)
