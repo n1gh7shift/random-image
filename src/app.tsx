@@ -91,7 +91,11 @@ export const App = () => {
   return (
     <div className={styles.scrollContainer}>
       <Rows spacing="3u">
-        <Text>t</Text>
+        <Text>
+          Click on 'Get random image' to pull randomized Unsplash photos. Browse
+          until you find the one that fits your project, then click on the image
+          or 'Add to design' button to add it to your design.
+        </Text>
         {/* Idle and loading state */}
         {state !== "error" && (
           <>
@@ -105,28 +109,39 @@ export const App = () => {
             </Button>
             {state === "success" && responseBody && (
               // console.log(responseBody.url)
-              <div style={{ position: "relative", width: "100%" }}>
-                <img
-                  src={responseBody.url}
+
+              <Rows spacing="1u">
+                <div style={{ position: "relative", width: "100%" }}>
+                  <img
+                    src={responseBody.url}
+                    onClick={() => handleClick(responseBody.url)}
+                    style={{ cursor: "pointer", width: "100%" }}
+                  />
+
+                  {imageAdding ? (
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        backgroundColor: "hsl(0,0%,0%,0.6)",
+                        height: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <LoadingIndicator />
+                    </div>
+                  ) : null}
+                </div>
+                <Button
+                  variant="secondary"
                   onClick={() => handleClick(responseBody.url)}
-                  style={{ cursor: "pointer", width: "100%" }}
-                />
-                {imageAdding ? (
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      backgroundColor: "hsl(0,0%,0%,0.6)",
-                      height: "100%",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <LoadingIndicator />
-                  </div>
-                ) : null}
-              </div>
+                  disabled={imageAdding}
+                >
+                  Add to design
+                </Button>
+              </Rows>
             )}
           </>
         )}
