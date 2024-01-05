@@ -93,8 +93,7 @@ export const App = () => {
       <Rows spacing="3u">
         <Text>
           Click on 'Get random image' to pull randomized Unsplash photos. Browse
-          until you find the one that fits your project, then click on the image
-          or 'Add to design' button to add it to your design.
+          until you find the one that fits your project.
         </Text>
         {/* Idle and loading state */}
         {state !== "error" && (
